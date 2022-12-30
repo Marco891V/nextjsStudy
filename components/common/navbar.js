@@ -1,24 +1,22 @@
-import { NavbarBrand as UINavBrand } from 'reactstrap'
+import { NavbarBrand as UINavBrand, Navbar as UINavBar } from 'reactstrap'
 
-const NavbarBrand = (props) => {
-    const color = props.color
-    const container = props.container
+const Navbar = (props) => {
 
-    return(
-        <UINavBrand 
-            color= {color} 
-            container={container}>
-              <img
-                alt="logo"
-                src="https://create-react-app.dev/img/logo.svg"
-                style={{
-                  height: 40,
-                  width: 40
-                }}
-              />
-             CiSiProva!!!
-        </UINavBrand>
-    )
-} 
+  return (
+    <UINavBar color='light'>
+      <UINavBrand>
+        <img
+          alt="logo"
+          src="assets/images/imgMy.png"
+          style={{
+            height: 40,
+            width: 40
+          }}
+        />
+        CiSiProva!!!
+      </UINavBrand>
+    </UINavBar>
+  )
+}
 
-export default NavbarBrand
+export default Navbar
