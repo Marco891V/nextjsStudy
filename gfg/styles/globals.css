@@ -76,7 +76,7 @@
 * {
   box-sizing: border-box;
   padding: 0;
-  margin: 0; 
+  margin: 0;
 }
 
 html,
@@ -86,13 +86,13 @@ body {
 }
 
 body {
-  color: rbg(--foreground-rgb);
-  /*background: linear-gradient(
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
       to bottom,
-      #07af7f,
+      transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));*/
+    rgb(var(--background-start-rgb));
 }
 
 a {
@@ -104,8 +104,4 @@ a {
   html {
     color-scheme: dark;
   }
-}
-
-.nav-link.active {
-  color: pink !important;
 }

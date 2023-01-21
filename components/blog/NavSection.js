@@ -1,13 +1,20 @@
 
+import classNames from "classnames"
+import Link from "next/link"
+
 function SectionNav(props) {
     const section = props.section
+
+    const classes = classNames('nav-link', {
+        'active': props.activeElement === section.slug,
+    })
 
     return (
         <>
             <div className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <Link href={'/category/'+section.slug} className={classes}>
                     {section.title}
-                </a>
+                </Link>
             </div>
         </>
     )

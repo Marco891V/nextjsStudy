@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Row, Col, Container, Nav, Navbar } from 'reactstrap'
-import RelatedArticle from '../components/blog/RelatedArticle'
-import ReadArticle from '../components/blog/PrincipalArticle'
-import SectionNav from '../components/blog/NavSection'
+import Link from "next/link"
+import RelatedArticle from '../../../components/blog/RelatedArticle'
+import ReadArticle from '../../../components/blog/PrincipalArticle'
+import SectionNav from '../../../components/blog/NavSection'
 
 export default function Home() {
   const router = useRouter()
-  const [showInfo, setShowInfo] = useState(false)
+  const categorySlug = router.query?.slug
 
   const articles = [
     {
@@ -66,28 +67,70 @@ export default function Home() {
   const sections = [
     {
       id: '1',
-      title: 'Sezione 1'
+      title: 'Sezione 1',
+      slug: 'pippo',
+      articles: [
+        {
+          id: '1',
+          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
+          title: 'ciao qui ci sarà un articolo 21',
+          date: '15/01/2023',
+          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
+        },
+      ]
     },
     {
       id: '2',
-      title: 'Sezione 2'
+      title: 'Sezione 2',
+      slug: 'pluto',
+      articles: [
+        {
+          id: '1',
+          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
+          title: 'ciao qui ci sarà un articolo 14',
+          date: '15/01/2023',
+          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
+        },
+      ]
     },
     {
       id: '3',
-      title: 'Sezione 3'
+      title: 'Sezione 3',
+      slug: 'hello',
+      articles: [
+        {
+          id: '1',
+          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
+          title: 'ciao qui ci sarà un articolo 1',
+          date: '15/01/2023',
+          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
+        },
+      ]
     },
     {
       id: '4',
-      title: 'Sezione 4'
+      title: 'Sezione 4',
+      slug: 'ciao',
+      articles: [
+        {
+          id: '1',
+          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
+          title: 'ciao qui ci sarà un articolo 2',
+          date: '15/01/2023',
+          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
+        },
+      ]
     },
   ]
+
+  const currentSection = sections.find((s) => s.slug === categorySlug)
 
   return (
 
     <Container fluid>
       <Row>
         <Col sm='12' className='text-center my-5'>
-          <h4>Ciaoneee!!!!</h4>
+          <h4>{categorySlug}</h4>
         </Col>
       </Row>
       <Row>
@@ -96,11 +139,15 @@ export default function Home() {
             {sections.map((section) => {
               return (
                 <SectionNav
-                  key={section.id}
-                  section={section}
+                  key= {section.id}
+                  section= {section}
+                  activeElement= {categorySlug}
                 />
               )
             })}
+            <Link href={'../pages/newArticles'}>
+              Aggiungi Articolo
+            </Link>
           </Nav>
         </Navbar>
       </Row>
@@ -122,7 +169,7 @@ export default function Home() {
       <Container>
         <Row className='p-3'>
           <Col md="8" sm="12" className='text-center p-4'>
-            {readings.map((reading) => {
+            {currentSection && currentSection.articles.map((reading) => {
               return (
                 <ReadArticle
                   key={reading.id}
@@ -130,7 +177,8 @@ export default function Home() {
                   type='row'
                 />
               )
-            })}
+            })
+            }
           </Col>
           <Col md="4" sm="12" className='p-4'>
             <h6>Qui la lista</h6>
