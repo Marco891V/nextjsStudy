@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import axios from 'axios'
+
 import styles from '../styles/Home.module.css'
 import { Row, Col, Container, Nav, Navbar } from 'reactstrap'
 import Link from "next/link"
 import RelatedArticle from '../components/blog/RelatedArticle'
-import ReadArticle from '../components/blog/PrincipalArticle'
+import ReadArticle from '../components/blog/ReadArticle'
 import SectionNav from '../components/blog/NavSection'
 import Sliders from '../components/blog/Caroseul'
 
@@ -12,118 +14,67 @@ export default function Home() {
   const router = useRouter()
   const categorySlug = router.query?.slug
 
-  const articles = [
-    {
-      id: '134',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 1'
-    },
-    {
-      id: '136',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 2'
-    },
-    {
-      id: '1324',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 3'
-    },
-    {
-      id: '13f24',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 3'
-    },
-  ]
+  const [articles, setArticles] = useState([])
+  const [readings, setReadings] = useState([])
 
-  const readings = [
-    {
-      id: '1',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 1',
-      date: '15/01/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-    {
-      id: '2',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 2',
-      date: '15/10/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-    {
-      id: '3',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 3',
-      date: '15/02/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-    {
-      id: '4',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 4',
-      date: '15/11/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-  ]
+  const getArticles = async(categories, type) => {
+    const url = `http://api.mediastack.com/v1/news?access_key=fa24fa32b64681604098ddd2cc93455f&categories=${categories}&countries=it&limit=4`
+    const res = await axios.get(url)
+
+    const jsonRes = res.data
+    console.log("res", res)
+
+    if(type === 'articles') {
+      setArticles(jsonRes.data)
+    } else {
+      setReadings(jsonRes.data)
+    }
+  }
 
   const sections = [
     {
       id: '1',
-      title: 'Sezione 1',
-      slug: 'pippo',
-      articles: [
-        {
-          id: '1',
-          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-          title: 'ciao qui ci sarà un articolo 21',
-          date: '15/01/2023',
-          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-        },
-      ]
+      title: 'General',
+      slug: 'general',
     },
     {
       id: '2',
-      title: 'Sezione 2',
-      slug: 'pluto',
-      articles: [
-        {
-          id: '1',
-          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-          title: 'ciao qui ci sarà un articolo 14',
-          date: '15/01/2023',
-          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-        },
-      ]
+      title: 'Business',
+      slug: 'business',
     },
     {
       id: '3',
-      title: 'Sezione 3',
-      slug: 'hello',
-      articles: [
-        {
-          id: '1',
-          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-          title: 'ciao qui ci sarà un articolo 1',
-          date: '15/01/2023',
-          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-        },
-      ]
+      title: 'Entertainment',
+      slug: 'entertainment',
     },
     {
       id: '4',
-      title: 'Sezione 4',
-      slug: 'ciao',
-      articles: [
-        {
-          id: '1',
-          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-          title: 'ciao qui ci sarà un articolo 2',
-          date: '15/01/2023',
-          article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-        },
-      ]
+      title: 'Health',
+      slug: 'health',
+    },
+    {
+      id: '5',
+      title: 'Science',
+      slug: 'science',
+    },
+    {
+      id: '6',
+      title: 'Sports',
+      slug: 'sports',
+    },
+    {
+      id: '7',
+      title: 'Technology',
+      slug: 'technology',
     },
   ]
+
+  //HOOK DI REACT
+  // L'hook viene chiamato ogni volta che le "dipendenze" cambiano
+  useEffect(() => {
+    getArticles('general', 'articles')
+    getArticles('sports', 'readings')
+  }, []) // <= Array di dipendenze, se vuoto questo hook viene chiamato solo la prima volta al render della pagina
 
   return (
 
@@ -145,10 +96,13 @@ export default function Home() {
                 />
               )
             })}
-            <Link href={'newArticles'}>
-              Aggiungi Articolo
-            </Link>
+            
           </Nav>
+          <div className='ms-auto'>
+              <Link href={'newArticles'}>
+                Aggiungi Articolo
+              </Link>
+            </div>
         </Navbar>
       </Row>
       <Container>

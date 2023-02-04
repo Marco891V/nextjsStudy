@@ -1,3 +1,4 @@
+import React from 'react';
 import { Row, Col, Container, Card, InputGroup, InputGroupText, CardBody, Label, Input } from 'reactstrap'
 import { FaEnvelope } from 'react-icons/fa';
 import { FaLock } from 'react-icons/fa';
@@ -11,7 +12,23 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
+/* COMMENTO CRISTINA:
+I nomi dei componenti devono iniziare con la lettera maiuscola
+quindi login deve diventare "Login"
 
+Poi solitamente usiamo una variabile e si esporta la variabile
+
+const Login = () => {
+    ...codice
+}
+
+export default Login
+
+ERRORE React:
+React Hook "useState" is called in function "login" that is neither a React function component nor a custom React Hook function. 
+React component names must start with an uppercase letter. 
+React Hook names must start with the word "use".
+**/
 export default function login() {
     const [email, setEmail] = useState('') 
     const [password, setPassword] = useState('')

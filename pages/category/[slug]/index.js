@@ -1,68 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 import { Row, Col, Container, Nav, Navbar } from 'reactstrap'
 import Link from "next/link"
 import RelatedArticle from '../../../components/blog/RelatedArticle'
-import ReadArticle from '../../../components/blog/PrincipalArticle'
+import ReadArticle from '../../../components/blog/ReadArticle'
 import SectionNav from '../../../components/blog/NavSection'
 
 export default function Home() {
   const router = useRouter()
   const categorySlug = router.query?.slug
 
-  const articles = [
-    {
-      id: '134',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 1'
-    },
-    {
-      id: '136',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 2'
-    },
-    {
-      id: '1324',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 3'
-    },
-    {
-      id: '13f24',
-      image: 'https://www.flowe.com/wp-content/uploads/2021/11/blockchain-rett.webp',
-      title: 'ciao qui ci sarà un articolo correlato 3'
-    },
-  ]
+  const [articles, setArticles] = useState([])
+  const [relatedArticles, setRelatedArticles] = useState([])
 
-  const readings = [
-    {
-      id: '1',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 1',
-      date: '15/01/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-    {
-      id: '2',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 2',
-      date: '15/10/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-    {
-      id: '3',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 3',
-      date: '15/02/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-    {
-      id: '4',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrQyV8aphm8r7ZW9tOWS8YZzMt-YSuUYUjnw&usqp=CAU',
-      title: 'ciao qui ci sarà un articolo 4',
-      date: '15/11/2023',
-      article: 'ciao sta cosa degli array e map non la sto capendo proprio benissimo'
-    },
-  ]
+  const getArticles = async(categories, type) => {
+    const url = `http://api.mediastack.com/v1/news?access_key=fa24fa32b64681604098ddd2cc93455f&categories=${categories}&countries=it&limit=4`
+    const res = await axios.get(url)
+
+    const jsonRes = res.data
+    if(type == 'categoryArticles') {
+      setArticles(jsonRes.data)
+    } else {
+      setRelatedArticles(jsonRes.data)
+    }
+    
+  }
 
   const sections = [
     {
@@ -125,6 +88,17 @@ export default function Home() {
 
   const currentSection = sections.find((s) => s.slug === categorySlug)
 
+  useEffect(() => {
+    if(categorySlug) {
+      getArticles(categorySlug, 'categoryArticles')
+    }
+    
+  }, [categorySlug])
+
+  useEffect(() => {
+    getArticles('sports', 'relatedArticles')
+  }, [])
+
   return (
 
     <Container fluid>
@@ -155,7 +129,7 @@ export default function Home() {
         <Row className='text-center'>
           <Col sm="12" className='p-3 my-4'>
             <h4 className='mb-3'>
-              Qui ci andrà l'introduzione
+              Qui ci andrà introduzione
             </h4>
             <p className='text-start'>
               Come suggerisce il termine, la “tecnologia” rappresenta la raccolta ideale, o il punto di arrivo attuale, delle nostre conoscenze sulle materie tecniche.
@@ -169,11 +143,11 @@ export default function Home() {
       <Container>
         <Row className='p-3'>
           <Col md="8" sm="12" className='text-center p-4'>
-            {currentSection && currentSection.articles.map((reading) => {
+            {articles.map((article) => {
               return (
                 <ReadArticle
-                  key={reading.id}
-                  reading={reading}
+                  key={article.id}
+                  reading={article}
                   type='row'
                 />
               )
@@ -182,7 +156,7 @@ export default function Home() {
           </Col>
           <Col md="4" sm="12" className='p-4'>
             <h6>Qui la lista</h6>
-            {articles.map((article) => {
+            {relatedArticles.map((article) => {
               return (
                 <RelatedArticle
                   key={article.id}

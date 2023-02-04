@@ -1,5 +1,6 @@
 
 import classNames from "classnames"
+import dayjs from "dayjs"
 
 function ReadArticle(props) {
 
@@ -17,7 +18,7 @@ function ReadArticle(props) {
           <a href="#">
             <img
               className='rounded-3 me-2'
-              src={reading.image}
+              src={reading.image ? reading.image : 'https://via.placeholder.com/150'}
               style={{
                 width: type === 'column' ? '60%' : 'auto',
                 height: type === 'column' ? '60%' : 'auto',
@@ -28,8 +29,8 @@ function ReadArticle(props) {
         </div>
         <div className="ps-3">
           <h6>{reading.title.toUpperCase()}</h6>
-          <span className="text-muted mb-2"><small>{reading.date}</small></span>
-          <p className="mt-3">{reading.article}</p>
+          <span className="text-muted mb-2"><small>{dayjs(reading.published_at).format('DD/MM/YYYY HH:mm')}</small></span>
+          <p className="mt-3">{reading.description}</p>
         </div>
       </div>
       <hr />

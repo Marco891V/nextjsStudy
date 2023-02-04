@@ -16,10 +16,10 @@ function RelatedArticle(props) {
         <div>
           <img
             className='rounded-3 me-2'
-            src={article.image}
+            src={article.image ? article.image : 'https://via.placeholder.com/150'}
             style={{
-              width: type === 'column' ? '100%': 60,
-              height: type === 'column' ? 'auto': 60,
+              width: type === 'column' ? '100%' : 60,
+              height: type === 'column' ? 'auto' : 60,
               objectFit: type === 'column' ? 'contain' : 'cover'
             }}
           />
